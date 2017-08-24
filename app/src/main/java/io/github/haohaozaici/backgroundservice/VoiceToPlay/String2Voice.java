@@ -200,7 +200,7 @@ public class String2Voice {
           default:
             break;
         }
-        Thread.sleep(550);
+        Thread.sleep(450);
       }
     } catch (InterruptedException ie) {
       ie.printStackTrace();
