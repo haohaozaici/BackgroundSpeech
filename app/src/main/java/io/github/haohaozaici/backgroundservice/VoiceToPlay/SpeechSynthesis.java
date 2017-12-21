@@ -35,10 +35,10 @@ public class SpeechSynthesis {
 
     SoundPool.Builder builder = new Builder();
     AudioAttributes.Builder audioBuilder = new AudioAttributes.Builder();
-    audioBuilder.setContentType(CONTENT_TYPE_SPEECH)
+    audioBuilder.setContentType(AudioAttributes.CONTENT_TYPE_UNKNOWN)
         .setFlags(FLAG_AUDIBILITY_ENFORCED)
         .setLegacyStreamType(AudioManager.STREAM_NOTIFICATION)
-        .setUsage(USAGE_NOTIFICATION_EVENT);
+        .setUsage(AudioAttributes.USAGE_ALARM);
 
     soundPool = builder.setAudioAttributes(audioBuilder.build())
         .setMaxStreams(10)

@@ -62,11 +62,11 @@ public class MyPushIntentService extends UmengMessageService {
       Observable.create(new ObservableOnSubscribe<Integer>() {
         @Override
         public void subscribe(@NonNull ObservableEmitter<Integer> e) throws Exception {
-          String2Voice.Money2Voice(MyPushIntentService.this, text, speechSynthesis);
+          String2Voice
+              .Money2Voice(Integer.parseInt(text), speechSynthesis);
         }
       }).subscribeOn(Schedulers.single())
           .subscribe();
-
 
 //      new Thread(new Runnable() {
 //        @Override

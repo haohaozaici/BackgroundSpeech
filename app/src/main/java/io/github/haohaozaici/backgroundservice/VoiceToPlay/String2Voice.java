@@ -2,6 +2,7 @@ package io.github.haohaozaici.backgroundservice.VoiceToPlay;
 
 import android.content.Context;
 import android.util.Log;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -40,6 +41,15 @@ public class String2Voice {
       yi = "亿",
       dot = "点";
 
+  /**
+   * 将金额（整数部分等于或少于12位，小数部分2位）转换为中文大写形式.
+   *
+   * @param money 金额  单位分
+   * @return 中文大写
+   */
+  public static String int2Money(int money) throws IllegalArgumentException {
+    return convert(formatMoney(money));
+  }
 
   /**
    * 将金额（整数部分等于或少于12位，小数部分2位）转换为中文大写形式.
@@ -47,7 +57,7 @@ public class String2Voice {
    * @param amount 金额数字
    * @return 中文大写
    */
-  public static String convert(String amount) throws IllegalArgumentException {
+  private static String convert(String amount) throws IllegalArgumentException {
     // 去掉分隔符
 //    amount = amount.replace(",", "");
 
@@ -87,6 +97,11 @@ public class String2Voice {
     String result = result_integer + result_fraction;
     if (result.contains("点")) {
       result += "元";
+    }
+
+    //处理 壹拾元 壹拾点
+    if (result.startsWith("壹拾")) {
+      result = result.substring(1);
     }
 
     return result;
@@ -134,15 +149,16 @@ public class String2Voice {
   }
 
 
-  public static void Money2Voice(Context context, String money, SpeechSynthesis speechSynthesis) {
+  public static void Money2Voice(int money, SpeechSynthesis speechSynthesis)
+      throws IllegalArgumentException {
     List<Sound> sounds = speechSynthesis.getSounds();
-    String text = convert(money);
+    String text = int2Money(money);
 
     Log.d("MainActivity", "Money2Voice: " + text);
 
     try {
       speechSynthesis.play(sounds.get(12));
-      Thread.sleep(1200);
+      Thread.sleep(1350);
       char[] chars = text.toCharArray();
       for (int i = 0; i < chars.length; i++) {
         switch (chars[i] + "") {
@@ -200,12 +216,18 @@ public class String2Voice {
           default:
             break;
         }
-        Thread.sleep(400);
+        Thread.sleep(600);
       }
     } catch (InterruptedException ie) {
       ie.printStackTrace();
     }
+  }
 
+  public static String formatMoney(int money) {
+    Double d = Double.parseDouble(money + "");
+    d /= 100;
 
+    DecimalFormat df = new DecimalFormat("#########0.00");
+    return df.format(d);
   }
 }
