@@ -25,6 +25,8 @@ public class SpeechSynthesis {
   private static final String TAG = "SpeechSynthesis";
   public static final String SOUNDS_FOLDER = "tts";
 
+  private static final float VOLUME = 1.0f;
+
   private AssetManager assetManager;
   private SoundPool soundPool;
 
@@ -36,9 +38,9 @@ public class SpeechSynthesis {
     SoundPool.Builder builder = new Builder();
     AudioAttributes.Builder audioBuilder = new AudioAttributes.Builder();
     audioBuilder.setContentType(AudioAttributes.CONTENT_TYPE_UNKNOWN)
-        .setFlags(FLAG_AUDIBILITY_ENFORCED)
-        .setLegacyStreamType(AudioManager.STREAM_NOTIFICATION)
-        .setUsage(AudioAttributes.USAGE_ALARM);
+//        .setFlags(FLAG_AUDIBILITY_ENFORCED)
+        .setLegacyStreamType(AudioManager.STREAM_RING)
+        .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE);
 
     soundPool = builder.setAudioAttributes(audioBuilder.build())
         .setMaxStreams(10)
@@ -89,7 +91,7 @@ public class SpeechSynthesis {
       return 0;
     }
     Log.d(TAG, "play: success");
-    return soundPool.play(soundId, 1.0f, 1.0f, 1, 0, 1.0f);
+    return soundPool.play(soundId, VOLUME, VOLUME, 1, 0, 1.0f);
   }
 
   public void release() {

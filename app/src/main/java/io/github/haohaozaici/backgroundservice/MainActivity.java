@@ -162,10 +162,12 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public void onTextChanged(CharSequence s, int start, int before, int count) {
         money = s.toString();
-        if (Long.parseLong(money) > 999999999) {
-          Toast.makeText(MainActivity.this, "金额过大", Toast.LENGTH_SHORT).show();
-        } else if (money != null && !money.equals("")) {
-          hint_text.setText(String2Voice.formatMoney(Integer.parseInt(money)) + " 元");
+        if (money != null && !money.equals("")) {
+          if (Long.parseLong(money) > 999999999) {
+            Toast.makeText(MainActivity.this, "金额过大", Toast.LENGTH_SHORT).show();
+          } else {
+            hint_text.setText(String2Voice.formatMoney(Integer.parseInt(money)) + " 元");
+          }
         } else {
           hint_text.setText("");
         }
