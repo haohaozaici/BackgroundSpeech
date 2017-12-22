@@ -1,9 +1,7 @@
 package io.github.haohaozaici.backgroundservice.VoiceToPlay;
 
-import android.content.Context;
 import android.util.Log;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
