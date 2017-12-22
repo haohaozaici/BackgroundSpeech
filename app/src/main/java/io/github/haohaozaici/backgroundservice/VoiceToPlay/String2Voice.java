@@ -41,6 +41,8 @@ public class String2Voice {
       yi = "亿",
       dot = "点";
 
+  private static final long PLAY_SPEED = 520; //millis 金额播放间隔
+
   /**
    * 将金额（整数部分等于或少于12位，小数部分2位）转换为中文大写形式.
    *
@@ -216,7 +218,7 @@ public class String2Voice {
           default:
             break;
         }
-        Thread.sleep(600);
+        Thread.sleep(PLAY_SPEED);
       }
     } catch (InterruptedException ie) {
       ie.printStackTrace();

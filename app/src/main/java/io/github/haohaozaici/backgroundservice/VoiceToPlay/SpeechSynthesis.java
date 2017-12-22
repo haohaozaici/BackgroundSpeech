@@ -1,16 +1,13 @@
 package io.github.haohaozaici.backgroundservice.VoiceToPlay;
 
-import static android.media.AudioAttributes.CONTENT_TYPE_SPEECH;
-import static android.media.AudioAttributes.FLAG_AUDIBILITY_ENFORCED;
-import static android.media.AudioAttributes.USAGE_NOTIFICATION_EVENT;
-
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
-import android.media.SoundPool.Builder;
+import android.os.Build;
 import android.util.Log;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,19 +32,36 @@ public class SpeechSynthesis {
   public SpeechSynthesis(Context context) {
     assetManager = context.getAssets();
 
-    SoundPool.Builder builder = new Builder();
-    AudioAttributes.Builder audioBuilder = new AudioAttributes.Builder();
-    audioBuilder.setContentType(AudioAttributes.CONTENT_TYPE_UNKNOWN)
-//        .setFlags(FLAG_AUDIBILITY_ENFORCED)
-        .setLegacyStreamType(AudioManager.STREAM_RING)
-        .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE);
-
-    soundPool = builder.setAudioAttributes(audioBuilder.build())
-        .setMaxStreams(10)
-        .build();
+    createSoundPool();
 
     loadSounds();
 
+  }
+
+  protected void createSoundPool() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+      createNewSoundPool();
+    } else {
+      createOldSoundPool();
+    }
+  }
+
+  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+  protected void createNewSoundPool(){
+    AudioAttributes attributes = new AudioAttributes.Builder()
+        .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
+        //        .setFlags(FLAG_AUDIBILITY_ENFORCED)
+        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+        .build();
+    soundPool = new SoundPool.Builder()
+        .setAudioAttributes(attributes)
+        .setMaxStreams(11)
+        .build();
+  }
+
+  @SuppressWarnings("deprecation")
+  protected void createOldSoundPool(){
+    soundPool = new SoundPool(11,AudioManager.STREAM_NOTIFICATION,0);
   }
 
   private void loadSounds() {

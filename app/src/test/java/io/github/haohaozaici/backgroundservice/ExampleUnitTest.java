@@ -33,7 +33,7 @@ public class ExampleUnitTest {
     for (int i : money) {
 
       System.out
-          .println("输入: " + i + "->" + i + "-->" + String2Voice.int2Money(i));
+          .println("输入: " + i + "->" + formatMoney(i) + "-->" + String2Voice.int2Money(i));
 
     }
 
