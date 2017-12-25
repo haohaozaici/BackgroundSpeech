@@ -20,7 +20,7 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.umeng.message.PushAgent;
-import io.github.haohaozaici.backgroundservice.VoiceToPlay.SpeechSynthesis;
+import io.github.haohaozaici.backgroundservice.voicetoplay.SpeechSynthesis;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
       }
     });
 
-    speechSynthesis = SpeechSynthesis.getInstance(this);
+    speechSynthesis = SpeechSynthesis.getInstance();
 
     play_money.setOnClickListener(new OnClickListener() {
       @Override

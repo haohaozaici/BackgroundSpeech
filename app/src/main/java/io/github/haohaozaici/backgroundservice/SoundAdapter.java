@@ -10,8 +10,8 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.github.haohaozaici.backgroundservice.SoundAdapter.SoundViewHolder;
-import io.github.haohaozaici.backgroundservice.VoiceToPlay.Sound;
-import io.github.haohaozaici.backgroundservice.VoiceToPlay.SpeechSynthesis;
+import io.github.haohaozaici.backgroundservice.voicetoplay.Sound;
+import io.github.haohaozaici.backgroundservice.voicetoplay.SpeechSynthesis;
 import java.util.List;
 
 /**

@@ -1,10 +1,10 @@
-package io.github.haohaozaici.backgroundservice.VoiceToPlay;
+package io.github.haohaozaici.backgroundservice.voicetoplay;
 
 /**
  * Created by haohao on 2017/8/23.
  */
 
-public class Sound {
+class Sound {
 
   private String mAssetPath;
   private String mName;

@@ -1,4 +1,4 @@
-package io.github.haohaozaici.backgroundservice.VoiceToPlay;
+package io.github.haohaozaici.backgroundservice.voicetoplay;
 
 import java.text.DecimalFormat;
 import java.util.regex.Matcher;

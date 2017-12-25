@@ -2,7 +2,7 @@ package io.github.haohaozaici.backgroundservice;
 
 import static org.junit.Assert.assertEquals;
 
-import io.github.haohaozaici.backgroundservice.VoiceToPlay.String2Voice;
+import io.github.haohaozaici.backgroundservice.voicetoplay.String2Voice;
 import java.text.DecimalFormat;
 import org.junit.Test;
 

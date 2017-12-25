@@ -1,6 +1,6 @@
-package io.github.haohaozaici.backgroundservice.VoiceToPlay;
+package io.github.haohaozaici.backgroundservice.voicetoplay;
 
-import static io.github.haohaozaici.backgroundservice.VoiceToPlay.String2Voice.int2Money;
+import static io.github.haohaozaici.backgroundservice.voicetoplay.String2Voice.int2Money;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -21,21 +21,18 @@ import java.util.Map;
  * Created by haohao on 2017/8/23.
  */
 
-public class SpeechSynthesis {
+public enum SpeechSynthesis {
 
-  private static SpeechSynthesis sSpeechSynthesis;
+  INSTANCE;
 
-  private SpeechSynthesis(Context context) {
+  public static SpeechSynthesis getInstance() {
+    return INSTANCE;
+  }
+
+  public void init(Context context) {
     assetManager = context.getAssets();
     createSoundPool();
     loadSounds();
-  }
-
-  public static synchronized SpeechSynthesis getInstance(Context context) {
-    if (sSpeechSynthesis == null) {
-      sSpeechSynthesis = new SpeechSynthesis(context);
-    }
-    return sSpeechSynthesis;
   }
 
   private static final String TAG = "SpeechSynthesis";
@@ -95,7 +92,7 @@ public class SpeechSynthesis {
 
   @SuppressWarnings("deprecation")
   private void createOldSoundPool() {
-    soundPool = new SoundPool(11, AudioManager.STREAM_NOTIFICATION, 0);
+    soundPool = new SoundPool(MAX_STREAMS, AudioManager.STREAM_NOTIFICATION, 0);
   }
 
   private void loadSounds() {
@@ -145,7 +142,7 @@ public class SpeechSynthesis {
 
   public void money2Voice(int money) throws IllegalArgumentException {
     String text = int2Money(money);
-    Log.d("MainActivity", "Money2Voice: " + text);
+    Log.d(TAG, "money2Voice: " + text);
 
     try {
       // TODO: 2017/12/25 播放首部

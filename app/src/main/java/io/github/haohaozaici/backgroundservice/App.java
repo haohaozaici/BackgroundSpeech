@@ -4,7 +4,7 @@ import android.app.Application;
 import android.util.Log;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
-import io.github.haohaozaici.backgroundservice.VoiceToPlay.SpeechSynthesis;
+import io.github.haohaozaici.backgroundservice.voicetoplay.SpeechSynthesis;
 import io.github.haohaozaici.backgroundservice.umeng.MyPushIntentService;
 
 /**
@@ -24,7 +24,8 @@ public class App extends Application {
 
     mPushAgent = PushAgent.getInstance(this);
     registerPush();
-    speechSynthesis = SpeechSynthesis.getInstance(this);
+    speechSynthesis = SpeechSynthesis.getInstance();
+    speechSynthesis.init(this);
 
   }
 

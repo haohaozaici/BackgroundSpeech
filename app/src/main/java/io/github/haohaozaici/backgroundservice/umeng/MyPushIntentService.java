@@ -5,7 +5,7 @@ import android.content.Intent;
 import com.umeng.message.UmengMessageService;
 import com.umeng.message.common.UmLog;
 import com.umeng.message.entity.UMessage;
-import io.github.haohaozaici.backgroundservice.VoiceToPlay.SpeechSynthesis;
+import io.github.haohaozaici.backgroundservice.voicetoplay.SpeechSynthesis;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -27,10 +27,13 @@ public class MyPushIntentService extends UmengMessageService {
   private SpeechSynthesis speechSynthesis;
 
   @Override
+  public void onCreate() {
+    super.onCreate();
+    speechSynthesis = SpeechSynthesis.getInstance();
+  }
+
+  @Override
   public void onMessage(Context context, Intent intent) {
-    if (speechSynthesis == null) {
-      speechSynthesis = SpeechSynthesis.getInstance(this);
-    }
     try {
       //可以通过MESSAGE_BODY取得消息体
       String message = intent.getStringExtra(AgooConstants.MESSAGE_BODY);
