@@ -1,15 +1,12 @@
 package io.github.haohaozaici.backgroundservice;
 
-import static io.github.haohaozaici.backgroundservice.App.speechSynthesis;
-
 import android.Manifest;
 import android.Manifest.permission;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,16 +15,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.umeng.message.PushAgent;
-import io.github.haohaozaici.backgroundservice.VoiceToPlay.Sound;
 import io.github.haohaozaici.backgroundservice.VoiceToPlay.SpeechSynthesis;
-import io.github.haohaozaici.backgroundservice.VoiceToPlay.String2Voice;
-import io.github.haohaozaici.backgroundservice.umeng.MyPushIntentService;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -35,8 +28,8 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import java.text.DecimalFormat;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,8 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
   @BindView(R.id.restartApp)
   Button restartApp;
-  @BindView(R.id.play_sound)
-  Button play_sound;
   @BindView(R.id.play_money)
   Button play_money;
   @BindView(R.id.sound_list)
@@ -84,23 +75,7 @@ public class MainActivity extends AppCompatActivity {
       }
     });
 
-    speechSynthesis = new SpeechSynthesis(this);
-    sound_list.setLayoutManager(new LinearLayoutManager(this));
-    sound_list.setAdapter(new SoundAdapter(this, speechSynthesis.getSounds(), speechSynthesis));
-
-    play_sound.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        for (Sound sound : speechSynthesis.getSounds()) {
-          speechSynthesis.play(sound);
-          try {
-            Thread.sleep(1000);
-          } catch (InterruptedException ie) {
-            ie.printStackTrace();
-          }
-        }
-      }
-    });
+    speechSynthesis = SpeechSynthesis.getInstance(this);
 
     play_money.setOnClickListener(new OnClickListener() {
       @Override
@@ -112,10 +87,13 @@ public class MainActivity extends AppCompatActivity {
               @Override
               public void subscribe(@NonNull ObservableEmitter<String> e) throws Exception {
                 try {
-                  String2Voice.Money2Voice(Integer.parseInt(money), speechSynthesis);
+                  speechSynthesis.money2Voice(Integer.parseInt(money));
                 } catch (IllegalArgumentException excep) {
                   Log.w(TAG, "IllegalArgumentException: " + excep.getMessage());
                   e.onNext(excep.getMessage());
+                } catch (NullPointerException e1) {
+                  Log.w(TAG, "NullPointerException: " + e1.getMessage());
+                  e.onNext(e1.getMessage());
                 }
               }
             })
@@ -166,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
           if (Long.parseLong(money) > 999999999) {
             Toast.makeText(MainActivity.this, "金额过大", Toast.LENGTH_SHORT).show();
           } else {
-            hint_text.setText(String2Voice.formatMoney(Integer.parseInt(money)) + " 元");
+            hint_text.setText(formatMoney(Integer.parseInt(money)) + " 元");
           }
         } else {
           hint_text.setText("");
@@ -187,5 +165,13 @@ public class MainActivity extends AppCompatActivity {
   protected void onDestroy() {
     super.onDestroy();
     speechSynthesis.release();
+  }
+
+  public static String formatMoney(int money) {
+    Double d = Double.parseDouble(money + "");
+    d /= 100;
+
+    DecimalFormat df = new DecimalFormat("#########0.00");
+    return df.format(d);
   }
 }

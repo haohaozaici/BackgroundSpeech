@@ -14,7 +14,7 @@ import io.github.haohaozaici.backgroundservice.umeng.MyPushIntentService;
 public class App extends Application {
 
   private static final String TAG = "MyApplication";
-  public static SpeechSynthesis speechSynthesis;
+  public SpeechSynthesis speechSynthesis;
 
   private PushAgent mPushAgent;
 
@@ -24,7 +24,7 @@ public class App extends Application {
 
     mPushAgent = PushAgent.getInstance(this);
     registerPush();
-    speechSynthesis = new SpeechSynthesis(this);
+    speechSynthesis = SpeechSynthesis.getInstance(this);
 
   }
 

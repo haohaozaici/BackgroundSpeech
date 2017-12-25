@@ -1,8 +1,6 @@
 package io.github.haohaozaici.backgroundservice.VoiceToPlay;
 
-import android.util.Log;
 import java.text.DecimalFormat;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,7 +8,9 @@ import java.util.regex.Pattern;
  * Created by haohao on 2017/8/24.
  */
 
-public class String2Voice {
+class String2Voice {
+
+  private static final String TAG = "SpeechSynthesis";
 
   private static final Pattern AMOUNT_PATTERN =
       Pattern.compile("^(0|[1-9]\\d{0,11})\\.(\\d\\d)$"); // 不考虑分隔符的正确性
@@ -19,27 +19,6 @@ public class String2Voice {
   private static final String[] U1 = {"", "拾", "佰", "仟"};
   private static final String[] U2 = {"", "万", "亿"};
 
-  private static final String zero = "零",
-      one = "壹",
-      two = "贰",
-      three = "叁",
-      four = "肆",
-      five = "伍",
-      six = "陆",
-      seven = "柒",
-      eight = "捌",
-      nine = "玖";
-
-  private static final String yuan = "元",
-      zheng = "整",
-      shi = "拾",
-      bai = "佰",
-      qian = "仟",
-      wan = "万",
-      yi = "亿",
-      dot = "点";
-
-  private static final long PLAY_SPEED = 520; //millis 金额播放间隔
 
   /**
    * 将金额（整数部分等于或少于12位，小数部分2位）转换为中文大写形式.
@@ -51,12 +30,7 @@ public class String2Voice {
     return convert(formatMoney(money));
   }
 
-  /**
-   * 将金额（整数部分等于或少于12位，小数部分2位）转换为中文大写形式.
-   *
-   * @param amount 金额数字
-   * @return 中文大写
-   */
+
   private static String convert(String amount) throws IllegalArgumentException {
     // 去掉分隔符
 //    amount = amount.replace(",", "");
@@ -148,80 +122,6 @@ public class String2Voice {
     return buffer.reverse().toString();
   }
 
-
-  public static void Money2Voice(int money, SpeechSynthesis speechSynthesis)
-      throws IllegalArgumentException {
-    List<Sound> sounds = speechSynthesis.getSounds();
-    String text = int2Money(money);
-
-    Log.d("MainActivity", "Money2Voice: " + text);
-
-    try {
-      speechSynthesis.play(sounds.get(12));
-      Thread.sleep(1350);
-      char[] chars = text.toCharArray();
-      for (int i = 0; i < chars.length; i++) {
-        switch (chars[i] + "") {
-          case zero:
-            speechSynthesis.play(sounds.get(0));
-            break;
-          case one:
-            speechSynthesis.play(sounds.get(1));
-            break;
-          case two:
-            speechSynthesis.play(sounds.get(2));
-            break;
-          case three:
-            speechSynthesis.play(sounds.get(3));
-            break;
-          case four:
-            speechSynthesis.play(sounds.get(4));
-            break;
-          case five:
-            speechSynthesis.play(sounds.get(5));
-            break;
-          case six:
-            speechSynthesis.play(sounds.get(6));
-            break;
-          case seven:
-            speechSynthesis.play(sounds.get(7));
-            break;
-          case eight:
-            speechSynthesis.play(sounds.get(8));
-            break;
-          case nine:
-            speechSynthesis.play(sounds.get(9));
-            break;
-          case yuan:
-            speechSynthesis.play(sounds.get(17));
-            break;
-          case shi:
-            speechSynthesis.play(sounds.get(13));
-            break;
-          case bai:
-            speechSynthesis.play(sounds.get(11));
-            break;
-          case qian:
-            speechSynthesis.play(sounds.get(16));
-            break;
-          case wan:
-            speechSynthesis.play(sounds.get(15));
-            break;
-          case yi:
-            speechSynthesis.play(sounds.get(14));
-            break;
-          case dot:
-            speechSynthesis.play(sounds.get(10));
-            break;
-          default:
-            break;
-        }
-        Thread.sleep(PLAY_SPEED);
-      }
-    } catch (InterruptedException ie) {
-      ie.printStackTrace();
-    }
-  }
 
   public static String formatMoney(int money) {
     Double d = Double.parseDouble(money + "");

@@ -1,23 +1,14 @@
 package io.github.haohaozaici.backgroundservice.umeng;
 
-import static io.github.haohaozaici.backgroundservice.App.speechSynthesis;
-
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
-import android.renderscript.RenderScript.RSErrorHandler;
-import com.umeng.message.UTrack;
 import com.umeng.message.UmengMessageService;
 import com.umeng.message.common.UmLog;
 import com.umeng.message.entity.UMessage;
-import io.github.haohaozaici.backgroundservice.App;
-import io.github.haohaozaici.backgroundservice.VoiceToPlay.Sound;
 import io.github.haohaozaici.backgroundservice.VoiceToPlay.SpeechSynthesis;
-import io.github.haohaozaici.backgroundservice.VoiceToPlay.String2Voice;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Scheduler;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.schedulers.Schedulers;
 import org.android.agoo.common.AgooConstants;
@@ -33,11 +24,12 @@ import org.json.JSONObject;
 public class MyPushIntentService extends UmengMessageService {
 
   private static final String TAG = MyPushIntentService.class.getName();
+  private SpeechSynthesis speechSynthesis;
 
   @Override
   public void onMessage(Context context, Intent intent) {
     if (speechSynthesis == null) {
-      speechSynthesis = new SpeechSynthesis(this);
+      speechSynthesis = SpeechSynthesis.getInstance(this);
     }
     try {
       //可以通过MESSAGE_BODY取得消息体
@@ -62,8 +54,7 @@ public class MyPushIntentService extends UmengMessageService {
       Observable.create(new ObservableOnSubscribe<Integer>() {
         @Override
         public void subscribe(@NonNull ObservableEmitter<Integer> e) throws Exception {
-          String2Voice
-              .Money2Voice(Integer.parseInt(text), speechSynthesis);
+          speechSynthesis.money2Voice(Integer.parseInt(text));
         }
       }).subscribeOn(Schedulers.single())
           .subscribe();

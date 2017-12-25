@@ -67,7 +67,7 @@ public class SoundAdapter extends RecyclerView.Adapter<SoundViewHolder> {
       sound_name.setOnClickListener(new OnClickListener() {
         @Override
         public void onClick(View v) {
-          speechSynthesis.play(mSound);
+//          speechSynthesis.play(mSound);
         }
       });
     }
