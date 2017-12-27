@@ -19,6 +19,9 @@ import java.util.Map;
 
 /**
  * Created by haohao on 2017/8/23.
+ *
+ * 使用 {@link #getInstance()} 获取单例
+ * 首次创建必须调用 {@link #init(Context)} 使用ApplicationContext加载音频资源
  */
 
 public enum SpeechSynthesis {
@@ -36,11 +39,12 @@ public enum SpeechSynthesis {
   }
 
   private static final String TAG = "SpeechSynthesis";
-  private static final String SOUNDS_FOLDER = "tts";
+  private static final String SOUNDS_FOLDER = "tts2";  //音频资源目录
 
   private static final float VOLUME = 1.0f;   //播放音量
   private static final int MAX_STREAMS = 1;   //同时播放音频数量
-  private static final long PLAY_SPEED = 520; //millis 金额播放间隔
+  //  private static final long PLAY_SPEED = 520; //millis 金额播放间隔
+  private static final long PLAY_SPEED = 500; //millis 金额播放间隔
 
   private AssetManager assetManager;
   private SoundPool soundPool;
