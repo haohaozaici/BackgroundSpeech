@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
               @Override
               public void subscribe(@NonNull ObservableEmitter<String> e) throws Exception {
                 try {
-                  speechSynthesis.money2Voice(Integer.parseInt(money));
+                  speechSynthesis.money2Voice(0, Integer.parseInt(money));
                 } catch (IllegalArgumentException excep) {
                   Log.w(TAG, "IllegalArgumentException: " + excep.getMessage());
                   e.onNext(excep.getMessage());
