@@ -20,8 +20,9 @@ import java.util.Map;
 /**
  * Created by haohao on 2017/8/23.
  *
+ * 使用 {@link #money2Voice(int, int)} 方法播放收款声音
  * 使用 {@link #getInstance()} 获取单例
- * 首次创建必须调用 {@link #init(Context)} 使用ApplicationContext加载音频资源
+ * 首次创建必须调用 {@link #init(Context)} 方法初始化音频资源， 使用ApplicationContext或合适的Context加载音频资源
  */
 
 public enum SpeechSynthesis {
@@ -44,7 +45,7 @@ public enum SpeechSynthesis {
   private static final float VOLUME = 1.0f;   //播放音量
   private static final int MAX_STREAMS = 1;   //同时播放音频数量
   //  private static final long PLAY_SPEED = 520; //millis 金额播放间隔
-  private static final long PLAY_SPEED = 500; //millis 金额播放间隔
+  private static final long PLAY_SPEED = 500; //millis 金额播放间隔, 也可以单独对每个文件设置不同速度
 
   private AssetManager assetManager;
   private SoundPool soundPool;
@@ -144,77 +145,129 @@ public enum SpeechSynthesis {
     soundPool.release();
   }
 
-  public void money2Voice(int money) throws IllegalArgumentException {
+  public void money2Voice(int payType, int money)
+      throws IllegalArgumentException, InterruptedException {
     String text = int2Money(money);
     Log.d(TAG, "money2Voice: " + text);
 
-    try {
-      // TODO: 2017/12/25 播放首部
-      play(mSoundMap.get("tts_success"));
-      Thread.sleep(1350);
+    // TODO: 2017/12/25 播放首部
+//      play(mSoundMap.get("tts_success"));
+//      Thread.sleep(1350);
+    //支付方式：0全部 1 微信 2支付宝 3银行卡 4现金 5无卡支付 6qq钱包 7百度钱包8京东钱包 9口碑支付 10翼支付 11银联二维码 12龙支付
+    switch (payType) {
+      case 0:
+        play(mSoundMap.get("tts_success"));
+        Thread.sleep(1160);
+        break;
+      case 1:
+        play(mSoundMap.get("tts_success_weixin"));
+        Thread.sleep(1409);
+        break;
+      case 2:
+        play(mSoundMap.get("tts_success_zhifubao"));
+        Thread.sleep(1280);
+        break;
+      case 3:
+        break;
+      case 4:
+        play(mSoundMap.get("tts_success_xianjin"));
+        Thread.sleep(1120);
+        break;
+      case 5:
+        break;
+      case 6:
+        play(mSoundMap.get("tts_success_qqqianbao"));
+        Thread.sleep(1798);
+        break;
+      case 7:
+        play(mSoundMap.get("tts_success_baiduqianbao"));
+        Thread.sleep(1878);
+        break;
+      case 8:
+        play(mSoundMap.get("tts_success_jdqianbao"));
+        Thread.sleep(1872);
+        break;
+      case 9:
+        play(mSoundMap.get("tts_success_koubei"));
+        Thread.sleep(1458);
+        break;
+      case 10:
+        play(mSoundMap.get("tts_success_yizhifu"));
+        Thread.sleep(1592);
+        break;
+      case 11:
+        play(mSoundMap.get("tts_success_yinlianqr"));
+        Thread.sleep(2097);
+        break;
+      case 12:
+        play(mSoundMap.get("tts_success_longzhifu"));
+        Thread.sleep(1642);
+        break;
+      default:
+        play(mSoundMap.get("tts_success"));
+        Thread.sleep(1350);
+        break;
+    }
 
-      //金额播报
-      char[] chars = text.toCharArray();
-      for (int i = 0; i < chars.length; i++) {
-        switch (chars[i] + "") {
-          case zero:
-            play(mSoundMap.get("tts_0"));
-            break;
-          case one:
-            play(mSoundMap.get("tts_1"));
-            break;
-          case two:
-            play(mSoundMap.get("tts_2"));
-            break;
-          case three:
-            play(mSoundMap.get("tts_3"));
-            break;
-          case four:
-            play(mSoundMap.get("tts_4"));
-            break;
-          case five:
-            play(mSoundMap.get("tts_5"));
-            break;
-          case six:
-            play(mSoundMap.get("tts_6"));
-            break;
-          case seven:
-            play(mSoundMap.get("tts_7"));
-            break;
-          case eight:
-            play(mSoundMap.get("tts_8"));
-            break;
-          case nine:
-            play(mSoundMap.get("tts_9"));
-            break;
-          case yuan:
-            play(mSoundMap.get("tts_yuan"));
-            break;
-          case shi:
-            play(mSoundMap.get("tts_ten"));
-            break;
-          case bai:
-            play(mSoundMap.get("tts_hundred"));
-            break;
-          case qian:
-            play(mSoundMap.get("tts_thousand"));
-            break;
-          case wan:
-            play(mSoundMap.get("tts_ten_thousand"));
-            break;
-          case yi:
-            play(mSoundMap.get("tts_ten_million"));
-            break;
-          case dot:
-            play(mSoundMap.get("tts_dot"));
-            break;
-          default:
-            break;
-        }
-        Thread.sleep(PLAY_SPEED);
+    //金额播报
+    char[] chars = text.toCharArray();
+    for (int i = 0; i < chars.length; i++) {
+      switch (chars[i] + "") {
+        case zero:
+          play(mSoundMap.get("tts_0"));
+          break;
+        case one:
+          play(mSoundMap.get("tts_1"));
+          break;
+        case two:
+          play(mSoundMap.get("tts_2"));
+          break;
+        case three:
+          play(mSoundMap.get("tts_3"));
+          break;
+        case four:
+          play(mSoundMap.get("tts_4"));
+          break;
+        case five:
+          play(mSoundMap.get("tts_5"));
+          break;
+        case six:
+          play(mSoundMap.get("tts_6"));
+          break;
+        case seven:
+          play(mSoundMap.get("tts_7"));
+          break;
+        case eight:
+          play(mSoundMap.get("tts_8"));
+          break;
+        case nine:
+          play(mSoundMap.get("tts_9"));
+          break;
+        case yuan:
+          play(mSoundMap.get("tts_yuan"));
+          break;
+        case shi:
+          play(mSoundMap.get("tts_ten"));
+          break;
+        case bai:
+          play(mSoundMap.get("tts_hundred"));
+          break;
+        case qian:
+          play(mSoundMap.get("tts_thousand"));
+          break;
+        case wan:
+          play(mSoundMap.get("tts_ten_thousand"));
+          break;
+        case yi:
+          play(mSoundMap.get("tts_ten_million"));
+          break;
+        case dot:
+          play(mSoundMap.get("tts_dot"));
+          break;
+        default:
+          break;
       }
-    } catch (InterruptedException ie) {
-      ie.printStackTrace();
+      Thread.sleep(PLAY_SPEED);
     }
   }
 
