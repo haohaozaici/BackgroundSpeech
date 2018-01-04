@@ -156,7 +156,7 @@ public enum SpeechSynthesis {
     //支付方式：0全部 1 微信 2支付宝 3银行卡 4现金 5无卡支付 6qq钱包 7百度钱包8京东钱包 9口碑支付 10翼支付 11银联二维码 12龙支付
     switch (payType) {
       case 0:
-        play(mSoundMap.get("tts_success"));
+        play(mSoundMap.get("tts_success")); //收款成功
         Thread.sleep(1160);
         break;
       case 1:
@@ -204,8 +204,8 @@ public enum SpeechSynthesis {
         Thread.sleep(1642);
         break;
       default:
-        play(mSoundMap.get("tts_success"));
-        Thread.sleep(1350);
+        play(mSoundMap.get("tts_success"));  //收款成功
+        Thread.sleep(1160);
         break;
     }
 
