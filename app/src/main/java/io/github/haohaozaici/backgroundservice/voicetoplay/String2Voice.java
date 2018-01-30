@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
  * Created by haohao on 2017/8/24.
  */
 
-class String2Voice {
+public class String2Voice {
 
   private static final String TAG = "SpeechSynthesis";
 
